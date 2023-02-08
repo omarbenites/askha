@@ -1,0 +1,7 @@
+if (interactive()) {
+  suppressMessages(require(usethis))
+}
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^scripts$

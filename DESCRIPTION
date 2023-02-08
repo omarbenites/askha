@@ -1,0 +1,18 @@
+Package: askha
+Title: Agrobiodiversity Indexes to determine conservation status of crop cultivars
+Version: 0.0.1
+Authors@R: c( 
+          person("Omar", "Benites-Alfaro", email = "o.benites@metrika.org", role = c("aut", "cre")),
+          person("Vilma", "Hualla", , "v.hualla@cgiar.org", "aut")
+          )
+Maintainer: Omar Benites Alfaro <o.benites@metrika.org>
+Description: Implementation of the RCF and OCF indices to measure abundance and evenness of agro-biodiversity in cultivars in sampled or monitored landscapes. RCF and OCF stand for Relative Cultivar Frequency and Overall Cultivar Frequency respectively.
+License: GPL-3 | file LICENSE
+URL: https://github.com/omarbenites/askha
+BugReports: https://github.com/omarbenites/askha/issues
+Imports: 
+  dplyr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LazyData: true
