@@ -33,7 +33,7 @@ hcf <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
     ungroup()
   
   #Calculates House Cultivar Frequency (HCF) diving: number of sampled varieties / total number of tuber by households
-  dfr_hcf <- left_join(dfr, smry_muestreo_tntuber) %>% mutate(
+  dfr_hcf <- left_join(dfr, smry_muestreo_tntuber, by = "hh") %>% mutate(
     HCF = (nsvarie / tn_hh)
   )
   # HCF in percetage mode

@@ -5,17 +5,19 @@
 #' @param hh character household column name
 #' @param community character community name where. A community o communities belongs to certain locaiton
 #' @param location character location or admin level column name where cultivars were sampled or monitored
+#' @param shorten logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data
 #' @return it returns the RCF index and RCF scale
 #' @author Omar Benites
 #' @examples
 #' library(askha)
 #' data(samdata)
-#' dfr_hfc <- hcf(samdata, "code_farmer", "number_tuber_by_sampling")
+#' ocf(dfr = samdata , vname="variety", hh="code_farmer", 
+#' community = "cu_community", location = "ADM3_Name",shorten = TRUE)
 #' @import dplyr
 #' @importFrom dplyr group_by summarise distinct left_join mutate case_when n_distinct
 #' @export
 
-ocf <- function(dfr, vname, hh, community, location){
+ocf <- function(dfr, vname, hh, community, location, shorten = TRUE){
 
   index_varname <- which(names(dfr) == vname)
   names(dfr)[index_varname] <- "variety_name"
@@ -26,36 +28,33 @@ ocf <- function(dfr, vname, hh, community, location){
   index_varname <- which(names(dfr) == location)
   names(dfr)[index_varname] <- "location"
   
-  #tamaño
-  ncom <- dfr[, "cu_community"] %>% unique() %>% nrow()
-  ## Calculate comunity cultivar frequency (CCF)
-  datos_muestreo5 <- ccf(dfr, "variety_name", "hh", "community", "location", pctn = TRUE)
+  dfr_ccf <- ccf(dfr, "variety_name", "hh", "community", "location") 
   
-  smry_conteo_commu_admin3 <- datos_muestreo5 %>%
-    group_by(location) %>%
-    summarise(ntolcomunidades = n_distinct(community, na.rm = TRUE))
+  ##number of communities 
+  ncom <- dfr[, "community"] %>% unique() %>% length()
   
-  datos_muestreo6 <- left_join(datos_muestreo5, smry_conteo_commu_admin3, by = c("location"))
+  ## Sum of community cultivar frequency
+  dfr_ccf <- dfr_ccf %>%
+    group_by(variety_name) %>%
+    mutate(sumccf = sum(ccf, na.rm = TRUE)) %>%
+    ungroup()
   
-  # datos_muestreo6 <- datos_muestreo5 %>% mutate(ntolcomunidades = total_comun)
-  
-  ## Calculo del total de CCF (commnunity cultivar freq) por ADM3 (tomando distintos cu_variety_name y cu_community)
-  temp_ccf_varie6 <- datos_muestreo6 %>%
-    distinct(variety_name, community, .keep_all = TRUE) %>%
-    group_by(location, variety_name) %>%
-    summarise(total_ccf_varie = sum(CCF, na.rm = TRUE))
-  
-  
-  temp_ccf_varie6 <- temp_ccf_varie6 %>% mutate(OCF = 100 * (total_ccf_varie / 28))
-  
-  datos_muestreo7 <- left_join(datos_muestreo6, temp_ccf_varie6)
-  
-  
-  out <- datos_muestreo7 %>% mutate(OCF_scale = case_when(
-    OCF < 1 ~ "very few households",
-    OCF < 5 & OCF >= 1 ~ "few households",
-    OCF < 25 & OCF >= 5 ~ "many households",
-    OCF > 25 ~ "most households",
-  ))
+  ## OCF values
+  dfr_ocf <- dfr_ccf %>% mutate(OCF = sumccf/ncom)
 
+  ## OCF sCALE
+  dfr_ocf <- dfr_ocf %>% mutate(OCF_scale = case_when(
+      OCF < 1 ~ "very few households",
+      OCF < 5 & OCF >= 1 ~ "few households",
+      OCF < 25 & OCF >= 5 ~ "many households",
+      OCF > 25 ~ "most households",
+  ))
+ 
+  #TODO: agregar un OCF_AJUSTADO
+  
+  if(!shorten){
+     dfr_ocf <- left_join(dfr , dfr_ocf %>% select(community, variety_name, OCF, OCF_scale), by = c("community", "variety_name")) 
+  } 
+  
+ return(dfr_ocf)
 }

@@ -4,7 +4,7 @@
 \alias{rcf}
 \title{Relative Cultivar Frequency (RCF)}
 \usage{
-rcf(dfr, vname, hh, nsvarie, location)
+rcf(dfr, vname, hh, nsvarie, community, location, shorten = FALSE)
 }
 \arguments{
 \item{dfr}{data.frame table name that constains the data}
@@ -15,7 +15,12 @@ rcf(dfr, vname, hh, nsvarie, location)
 
 \item{nsvarie}{character number of sampled varieties}
 
-\item{location}{character location or admin level column name where cultivars were sampled or monitored}
+\item{community}{character vector of one or multiple communities that belong to locations}
+
+\item{location}{character location or admin level column name where cultivars
+were sampled or monitored}
+
+\item{shorten}{logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data}
 }
 \value{
 it returns the RCF index and RCF scale
@@ -26,7 +31,7 @@ calculation of the relative cultivar frequency by household
 \examples{
 library(askha)
 data(samdata)
-dfr_hfc <- hcf(samdata, "code_farmer", "number_tuber_by_sampling")
+rcf(samdata, "variety" ,"code_farmer", "number_tuber_by_sampling", "cu_community"  ,"ADM3_Name")
 }
 \author{
 Omar Benites

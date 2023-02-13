@@ -17,10 +17,9 @@
 #' @export
 
 ccf <- function(dfr, vname, hh, community, location, pctn = TRUE) {
-
   ncut <- NULL
 
-  #Rename columns in order to use DPLYR (non-standard evaluation)
+  # Rename columns in order to use DPLYR (non-standard evaluation)
   index_varname <- which(names(dfr) == vname)
   names(dfr)[index_varname] <- "variety_name"
   index_varname <- which(names(dfr) == hh)
@@ -29,39 +28,30 @@ ccf <- function(dfr, vname, hh, community, location, pctn = TRUE) {
   names(dfr)[index_varname] <- "community"
   index_varname <- which(names(dfr) == location)
   names(dfr)[index_varname] <- "location"
- 
-  #Conteo de variedades por localidad
-  smry_totalhh_varie_community <- dfr %>%
+
+  ## nnh: count distinct households (or farmers) by community
+  smry_codefarmer <- dfr %>%
     group_by(community) %>%
-    count(variety_name) %>%
-    ungroup()
-  
-  #JOIN de los dfr (dfr) y el conteo de variedades por localidad (smry_totalhh_varie_comunidad)
-  dfr <- left_join(dfr, smry_totalhh_varie_community)
-  #renombramos la columna "n" por "totalhh_varie_commu"
-  dfr <- rename(dfr, totalhh_varie_commu = n )
- 
-  ## Nro de hogares que cultivan la variedad (i) en una comunidad (j) (denominador)
+    summarise(nhh = n_distinct(hh))
+
+  # calculation of nvxhh: number of household by variety and community
   smry_ntotalhhcomu <- dfr %>%
-    group_by(community) %>%
-    summarize(totalhh_comu = n_distinct(hh))
-  
-  dfr <- left_join(dfr, smry_ntotalhhcomu)
-  
-  
-  ## numerador / denominadors
-  dfr <- dfr %>% mutate(
-    CCF = (totalhh_varie_commu / totalhh_comu),
-  )
-  if(pctn){
-    dfr <- dfr %>% mutate(
-    CCF100 = (totalhh_varie_commu / totalhh_comu) * 100
-    )
-  }
-  
-}  
-  
-  
+    group_by(community, variety_name) %>%
+    summarize(nhhxvarie = n_distinct(hh))
 
+  out <- left_join(smry_codefarmer, smry_ntotalhhcomu, by = c("community"))
 
-  
+  out <- out %>%
+    mutate(ccf = (nhhxvarie / nhh) * 100) %>%
+    ungroup()
+
+  ##
+ 
+  ## TODO': AGREGAR NUMERO DE comunidades del amd3
+  # kk <- left_join(dfr, out, c("community", "variety_name"))
+  # left_join(kk, out, by = "variety_name")
+
+  ## TODO' HACER UN JOIN CON LA DATA ORIGINAL
+
+}
+
