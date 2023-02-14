@@ -13,7 +13,7 @@ test_that("Test calculation of ocf index match number of rows", {
   library(askha)
   data("samdata")
   
-  out <- ocf(dfr = samdata , vname="variety", hh="code_farmer", community = "cu_community", location = "ADM3_Name",shorten = FALSE)
+  out <- ocf(dfr = samdata , vname="variety", hh="code_farmer", community = "cu_community", location = "ADM3_Name",shorten = TRUE)
   expect_equal(nrow(out), nrow(samdata))
   # a2 <- ocf(dfr = samdata , vname="variety", hh="code_farmer", community = "cu_community", location = "ADM3_Name",shorten = FALSE)
 })

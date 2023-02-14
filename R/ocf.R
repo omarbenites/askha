@@ -5,7 +5,7 @@
 #' @param hh character household column name
 #' @param community character community name where. A community o communities belongs to certain locaiton
 #' @param location character location or admin level column name where cultivars were sampled or monitored
-#' @param shorten logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data
+#' @param shorten logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF indexes to original data
 #' @return it returns the RCF index and RCF scale
 #' @author Omar Benites
 #' @examples
@@ -17,7 +17,7 @@
 #' @importFrom dplyr group_by summarise distinct left_join mutate case_when n_distinct
 #' @export
 
-ocf <- function(dfr, vname, hh, community, location, shorten = TRUE){
+ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
 
   index_varname <- which(names(dfr) == vname)
   names(dfr)[index_varname] <- "variety_name"
@@ -52,7 +52,7 @@ ocf <- function(dfr, vname, hh, community, location, shorten = TRUE){
  
   #TODO: agregar un OCF_AJUSTADO
   
-  if(!shorten){
+  if(shorten){
      dfr_ocf <- left_join(dfr , dfr_ocf %>% select(community, variety_name, OCF, OCF_scale), by = c("community", "variety_name")) 
   } 
   

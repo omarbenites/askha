@@ -4,7 +4,7 @@
 \alias{ocf}
 \title{Relative Cultivar Frequency (RCF)}
 \usage{
-ocf(dfr, vname, hh, community, location, shorten = TRUE)
+ocf(dfr, vname, hh, community, location, shorten = FALSE)
 }
 \arguments{
 \item{dfr}{data.frame table name that constains the data}
@@ -17,7 +17,7 @@ ocf(dfr, vname, hh, community, location, shorten = TRUE)
 
 \item{location}{character location or admin level column name where cultivars were sampled or monitored}
 
-\item{shorten}{logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data}
+\item{shorten}{logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF indexes to original data}
 }
 \value{
 it returns the RCF index and RCF scale
