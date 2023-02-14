@@ -4,7 +4,16 @@
 \alias{rcf}
 \title{Relative Cultivar Frequency (RCF)}
 \usage{
-rcf(dfr, vname, hh, nsvarie, community, location, shorten = FALSE)
+rcf(
+  dfr,
+  vname,
+  hh,
+  nsvarie,
+  community,
+  location,
+  is_grouped = FALSE,
+  shorten = FALSE
+)
 }
 \arguments{
 \item{dfr}{data.frame table name that constains the data}
@@ -19,6 +28,8 @@ rcf(dfr, vname, hh, nsvarie, community, location, shorten = FALSE)
 
 \item{location}{character location or admin level column name where cultivars
 were sampled or monitored}
+
+\item{is_grouped}{logical whether group the number of varieties by location. By default \code{is_grouped=FALSE}}
 
 \item{shorten}{logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data}
 }

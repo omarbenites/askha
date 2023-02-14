@@ -15,7 +15,7 @@
 #' @import dplyr
 #' @importFrom dplyr group_by summarise ungroup left_join mutate case_when
 #' @export
-
+  
 hcf <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
   
   ncut <- NULL

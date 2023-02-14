@@ -7,6 +7,7 @@
 #' @param community character vector of one or multiple communities that belong to locations
 #' @param location character location or admin level column name where cultivars 
 #' were sampled or monitored
+#' @param is_grouped logical whether group the number of varieties by location. By default \code{is_grouped=FALSE}
 #' @param shorten logical \code{shorten=TRUE} only show a simplified version of the original data. Whether \code{shorten=TRUE} append OCF and OCF scales to original data
 #' @return it returns the RCF index and RCF scale
 #' @author Omar Benites
@@ -18,7 +19,7 @@
 #' @importFrom dplyr group_by summarise ungroup left_join mutate case_when n_distinct
 #' @export
 
-rcf <- function(dfr, vname, hh, nsvarie, community, location, shorten = FALSE) {
+rcf <- function(dfr, vname, hh, nsvarie, community, location, is_grouped=FALSE, shorten = FALSE) {
   
   #Rename columns in order to use DPLYR (non-standard evaluation)
   index_varname <- which(names(dfr) == vname)
@@ -32,17 +33,30 @@ rcf <- function(dfr, vname, hh, nsvarie, community, location, shorten = FALSE) {
   index_varname <- which(names(dfr) == community)
   names(dfr)[index_varname] <- "community"
   
-  
   dfr_hcf <- hcf(dfr, "hh", "nsvarie")
   
-  ## Calculo de la suma de HCFs por variedad del numerador: suma total de hcf de las familias o households
-  temp_hcfxvarie <- dfr_hcf %>%
-    group_by(variety_name, location) %>%
-    summarise(totalhcfxvarie = sum(HCF, na.rm = TRUE)) %>%
-    ungroup()
-
+  ## Cálculo de la suma de HCFs por variedad del numerador: 
+  ## suma total de hcf de las familias o households
+  
+  if(is_grouped){
+    temp_hcfxvarie <- dfr_hcf %>%
+      group_by(variety_name) %>%
+      group_by(variety_name, location) %>%
+      summarise(totalhcfxvarie = sum(HCF, na.rm = TRUE)) %>%
+      ungroup()
+    dfr <- left_join(dfr, temp_hcfxvarie, by = c("variety_name", "location"))
+  }else{
+    temp_hcfxvarie <- dfr_hcf %>%
+      group_by(variety_name) %>%
+      #group_by(variety_name, location) %>%
+      summarise(totalhcfxvarie = sum(HCF, na.rm = TRUE)) %>%
+      ungroup()  
+    dfr <- left_join(dfr, temp_hcfxvarie, by = c("variety_name"))
+  }
+  
   ##  JOIN  tablas por variedad y location (o admin)
-  dfr <- left_join(dfr, temp_hcfxvarie, by = c("variety_name", "location"))
+  #dfr <- left_join(dfr, temp_hcfxvarie, by = c("variety_name", "location"))
+  #dfr <- left_join(dfr, temp_hcfxvarie, by = c("variety_name"))
 
   # ## conteo de household o agricultores agrupados por location (o admin)
   smry_conteo_hh_location <- dfr %>%
