@@ -18,6 +18,14 @@
   
 hcf <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
   
+  
+  #convert to data.frame if tibble
+  if(inherits(iris,"tibble")){
+    dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
+  }
+  
+  
+  #TODO: cut or thresshold 
   ncut <- NULL
   
   #rename columns in order to use dplyr functions

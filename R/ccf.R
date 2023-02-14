@@ -17,6 +17,12 @@
 #' @export
 
 ccf <- function(dfr, vname, hh, community, location, pctn = TRUE) {
+  
+  #convert to data.frame if tibble
+  if(inherits(iris,"tibble")){
+    dfr <- as.data.frame(dfr, stringsAsFactors=FALSE)  
+  }
+  
   ncut <- NULL
 
   # Rename columns in order to use DPLYR (non-standard evaluation)

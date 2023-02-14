@@ -19,6 +19,11 @@
 
 ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
 
+  #convert to data.frame if tibble
+  if(inherits(iris,"tibble")){
+    dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
+  }
+  
   index_varname <- which(names(dfr) == vname)
   names(dfr)[index_varname] <- "variety_name"
   index_varname <- which(names(dfr) == hh)

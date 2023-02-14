@@ -21,6 +21,11 @@
 
 rcf <- function(dfr, vname, hh, nsvarie, community, location, is_grouped=FALSE, shorten = FALSE) {
   
+  #convert to data.frame if tibble
+  if(inherits(iris,"tibble")){
+    dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
+  }
+  
   #Rename columns in order to use DPLYR (non-standard evaluation)
   index_varname <- which(names(dfr) == vname)
   names(dfr)[index_varname] <- "variety_name"
