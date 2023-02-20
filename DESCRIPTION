@@ -5,8 +5,8 @@ Authors@R: c(
           person("Omar", "Benites-Alfaro", email = "o.benites@metrika.org", role = c("aut", "cre")),
           person("Vilma", "Hualla", , "v.hualla@cgiar.org", "aut"),
           person("Stef", "De Han", , "S.DeHaan@cgiar.org", "aut"),
-          person(family = "Metrika Group", role = c("ctb", "cph"),
-          person(family = "International Potato Center", role = c("ctb", "cph")
+          person(family = "Metrika Group", role = c("ctb")),
+          person(family = "International Potato Center", role = c("ctb", "cph"))
           )
 Maintainer: Omar Benites Alfaro <o.benites@metrika.org>
 Description: Implementation of the RCF and OCF indices to measure abundance and evenness of agro-biodiversity in cultivars in sampled or monitored landscapes. RCF and OCF stand for Relative Cultivar Frequency and Overall Cultivar Frequency respectively.

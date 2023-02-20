@@ -45,7 +45,7 @@ rcf <- function(dfr, vname, hh, nsvarie, community, location, is_grouped=FALSE, 
   
   if(is_grouped){
     temp_hcfxvarie <- dfr_hcf %>%
-      group_by(variety_name) %>%
+      #group_by(variety_name) %>%
       group_by(variety_name, location) %>%
       summarise(totalhcfxvarie = sum(HCF, na.rm = TRUE)) %>%
       ungroup()
