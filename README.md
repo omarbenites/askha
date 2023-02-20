@@ -1,4 +1,4 @@
-# askha
+# *askha* <img src="man/figures/askha_sticker_logo.png" width="200" align="right" />
 
 ## Motivation
 
