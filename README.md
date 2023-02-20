@@ -25,7 +25,7 @@ remotes::install_github("omarbenites/askha")
 ## References
 
 
-- **The Spatial-Temporal Dynamics of Potato Agrobiodiversity in the Highlands of Central Peru: A Case Study of Smallholder Management across Farming Landscapes**[Link](https://www.mdpi.com/2073-445X/8/11/169)
+- **The Spatial-Temporal Dynamics of Potato Agrobiodiversity in the Highlands of Central Peru: A Case Study of Smallholder Management across Farming Landscapes**. [Link](https://www.mdpi.com/2073-445X/8/11/169)
 
-- **A long-term systematic monitoring framework for on-farm conserved potato landrace diversity.**[Link](https://cgspace.cgiar.org/handle/10568/72908)
+- **A long-term systematic monitoring framework for on-farm conserved potato landrace diversity**. [Link](https://cgspace.cgiar.org/handle/10568/72908)
 
