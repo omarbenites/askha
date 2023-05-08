@@ -1,5 +1,7 @@
 # *askha* <img src="man/figures/askha_sticker_logo.png" width="200" align="right" />
 
+**Note: The package makes the calculations correctly, but the internal R-code is still changing till having a final version ready-to-upload in CRAN**
+
 ## Motivation
 
 The aim of `askha` package is the implementation of the OCF and RCF indexes, both of them calculates the relative cultivar frequency and overall cultivar frequency index for crops. 
