@@ -20,7 +20,7 @@ hcf <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
   
   
   #convert to data.frame if tibble
-  if(inherits(iris,"tibble")){
+  if(inherits(dfr,"tibble")){
     dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
   }
   
@@ -53,6 +53,46 @@ hcf <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
   
   #dfr_hcf <- dfr_hcf %>% select(hh,nsvarie,tn_hh,HCF, HFC_percent)
   
+}
+
+### TEST OF THE NEW VERSION ###########
+
+hcf2 <- function(dfr, hh, nsvarie, ncut, pctn = TRUE ){
+  
+  
+  #convert to data.frame if tibble
+  if(inherits(dfr,"tibble")){
+    dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
+  }
+  
+  
+  #TODO: cut or thresshold 
+  ncut <- NULL
+  
+  
+  #Calculate the sum of sampled varieties by household (tn_hh)
+  smry_muestreo_tntuber <- dfr %>%
+    group_by(across({{ hh }})) %>%
+    summarise(across({{nsvarie}},
+                     ~ sum(., na.rm = TRUE),
+                     .names = "tn_hh"
+    )) %>% 
+    ungroup()
+    #summarize(tn_hh = sum(nsvarie, na.rm = TRUE)) %>%
+    #ungroup()
+  
+  #Calculates House Cultivar Frequency (HCF) diving: number of sampled varieties / total number of tuber by households
+  dfr_hcf <- left_join(dfr, smry_muestreo_tntuber, by = hh) %>% 
+    mutate(
+          HCF = across({{nsvarie}})/tn_hh
+        ) 
+    
+  # HCF in percetage mode
+  if(pctn){
+    dfr_hcf <- dfr_hcf %>% mutate(
+      HCF_percent = 100 * (across({{nsvarie}}) / tn_hh)
+    )
+  }
 }
 
 

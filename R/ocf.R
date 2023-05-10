@@ -20,7 +20,7 @@
 ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
 
   #convert to data.frame if tibble
-  if(inherits(iris,"tibble")){
+  if(inherits(dfr,"tibble")){
     dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
   }
   

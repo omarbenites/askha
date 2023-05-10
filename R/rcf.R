@@ -22,7 +22,7 @@
 rcf <- function(dfr, vname, hh, nsvarie, community, location, is_grouped=FALSE, shorten = FALSE) {
   
   #convert to data.frame if tibble
-  if(inherits(iris,"tibble")){
+  if(inherits(dfr,"tibble")){
     dfr <- as.data.frame(dfr,stringsAsFactors=FALSE)  
   }
   
