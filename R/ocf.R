@@ -14,7 +14,9 @@
 #' ocf(dfr = samdata , vname="variety", hh="code_farmer", 
 #' community = "cu_community", location = "ADM3_Name",shorten = TRUE)
 #' @import dplyr
+#' @import purrr
 #' @importFrom dplyr group_by summarise distinct left_join mutate case_when n_distinct
+#' @importFrom purrr as_vector
 #' @export
 
 ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
@@ -36,7 +38,7 @@ ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
   dfr_ccf <- ccf(dfr, "variety_name", "hh", "community", "location") 
   
   ##number of communities 
-  ncom <- dfr[, "community"] %>% unique() %>% length()
+  ncom <- dfr[, "community"] %>% purrr::as_vector() |> unique() |> length()
   
   ## Sum of community cultivar frequency
   dfr_ccf <- dfr_ccf %>%
@@ -58,7 +60,7 @@ ocf <- function(dfr, vname, hh, community, location, shorten = FALSE){
   #TODO: agregar un OCF_AJUSTADO
   
   if(shorten){
-     dfr_ocf <- left_join(dfr , dfr_ocf %>% select(community, variety_name, OCF, OCF_scale), by = c("community", "variety_name")) 
+     dfr_ocf <- left_join(dfr , dfr_ocf %>% dplyr::select(community, variety_name, OCF, OCF_scale), by = c("community", "variety_name")) 
   } 
   
  return(dfr_ocf)
